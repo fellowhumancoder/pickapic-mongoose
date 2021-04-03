@@ -16,6 +16,23 @@ module.exports = (router) => {
         })
       );
   });
+  router.get("/images/:id/downloadFile", (req, res) => {
+    Image.findById(req.params.id)
+      .sort({ createdOn: 1 })
+      .exec()
+      .then((image) => {
+        res.download(
+          path.join(__dirname, "..", "public", "uploads", image.id),
+          image.name
+        );
+      })
+      .catch((err) =>
+        res.status(500).json({
+          message: "Errorrrr",
+          error: err,
+        })
+      );
+  });
   router.get("/images", (req, res) => {
     Image.find()
       .sort({ createdOn: 1 })
